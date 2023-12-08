@@ -94,7 +94,12 @@ class PlaylistNotFoundException {
 
 
 /'4. DynamoDB Model Classes'/
-
+/'
+FIXME
+AlbumTrack is missing an expected member variable,
+asin, or asin may declared as an incorrect type
+==> expected: <true> but was: <false>
+'/
 class AlbumTrack {
 - @DynamoDBHashKey asin : String
 - @DynamoDBRangeKey trackNumber :  Integer
@@ -105,6 +110,10 @@ class AlbumTrack {
 class Playlist {
     - @DynamoDBHashKey id: String
     - songList: List<AlbumTrack>
+    - name: String
+    - customerId: String
+    - songCount: Integer
+    - tags: Set<String>
 
     + getId(): String
     + setId(id:String)
