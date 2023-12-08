@@ -1,1 +1,127 @@
-PARTICIPANTS: use this file for creating the class diagram in mastery task 01
+@startuml
+/'1. Activity classes '/
+
+class AddSongToPlaylistActivity {
+    - log: Logger
+    - playlistDao:PlaylistDao
+    - albumTrackDao:AlbumTrackDao
+
+    + AddSongToPlaylistActivity(playlistDao: PlaylistDao,
+                                albumTrackDao: AlbumTrackDao)
+    + handleRequest(addSongToPlaylistRequest: AddSongToPlaylistRequest,
+                    context: Context): AddSongToPlaylistResult
+}
+
+
+class CreatePlaylistActivity {
+    - log: Logger
+    - playlistDao: PlaylistDao
+
+    + CreatePlaylistActivity(playlistDao: PlaylistDao)
+    + handleRequest(createPlaylistRequest: CreatePlaylistRequest,
+                    context: Context): CreatePlaylistResult
+}
+
+class GetPlaylistActivity {
+    - log: Logger
+    - playlistDao: PlaylistDao
+
+    + GetPlaylistActivity(playlistDao: PlaylistDao)
+    + handleRequest(getPlaylistRequest: GetPlaylistRequest,
+                    context: Context): GetPlaylistResult
+}
+
+class GetPlaylistSongsActivity {
+    - log: Logger
+    - playlistDao: PlaylistDao
+
+    + GetPlaylistSongsActivity(playlistDao: PlaylistDao)
+    + handleRequest(getPlaylistSongsRequest: GetPlaylistSongsRequest,
+                    context: Context): GetPlaylistSongsResult
+}
+
+class UpdatePlaylistActivity {
+    - log: Logger
+    - playlistDao: PlaylistDao
+
+    + UpdatePlaylistActivity(playlistDao: PlaylistDao)
+    + handleRequest(updatePlaylistRequest: UpdatePlaylistRequest,
+                    context: Context): UpdatePlaylistResult
+}
+
+/'2. DAO Classes '/
+class AlbumTrackDao {
+    - dynamoDbMapper: DynamoDBMapper
+
+    + AlbumTrackDao(dynamoDbMapper: DynamoDBMapper)
+}
+
+
+class PlaylistDao {
+    - dynamoDbMapper: DynamoDBMapper
+
+    + PlaylistDao(dynamoDbMapper: DynamoDBMapper)
+    + getPlaylist(id: String): Playlist
+}
+
+
+/'3. Exception Classes '/
+class AlbumTrackNotFoundException {
+    + AlbumTrackNotFoundException()
+    + AlbumTrackNotFoundException(message: String)
+    + AlbumTrackNotFoundException(cause: Throwable)
+    + AlbumTrackNotFoundException(message: String,
+                                 cause: Throwable)
+}
+
+class InvalidAttributeValueException {
+
+    + InvalidAttributeValueException()
+    + InvalidAttributeValueException(message: String)
+    + InvalidAttributeValueException(cause: Throwable)
+    + InvalidAttributeValueException(message: String,
+                                    cause: Throwable)
+}
+
+class PlaylistNotFoundException {
+
+    + PlaylistNotFoundException()
+    + PlaylistNotFoundException(message: String)
+    + PlaylistNotFoundException((cause: Throwable)
+    + PlaylistNotFoundException(message: String,
+                                cause: Throwable)
+}
+
+
+/'4. DynamoDB Model Classes'/
+
+class AlbumTrack {
+- @DynamoDBHashKey asin : String
+- @DynamoDBRangeKey trackNumber :  Integer
+- albumName : String
+- songTitle : String
+}
+
+class Playlist {
+    - @DynamoDBHashKey id: String
+    - songList: List<AlbumTrack>
+
+    + getId(): String
+    + setId(id:String)
+    + getSongList(): List<AlbumTrack>
+    + setSongList(songList: List<AlbumTrack>)
+}
+
+/' Relationship '/
+Playlist -- AlbumTrack
+
+AddSongToPlaylistActivity -- AlbumTrackDao
+
+PlaylistDao -- CreatePlaylistActivity
+PlaylistDao -- AddSongToPlaylistActivity
+PlaylistDao -- GetPlaylistActivity
+PlaylistDao -- GetPlaylistSongsActivity
+PlaylistDao -- UpdatePlaylistActivity
+
+
+@enduml
