@@ -2,7 +2,6 @@
 /'1. Activity classes '/
 
 class AddSongToPlaylistActivity {
-    - log: Logger
     - playlistDao:PlaylistDao
     - albumTrackDao:AlbumTrackDao
 
@@ -14,7 +13,6 @@ class AddSongToPlaylistActivity {
 
 
 class CreatePlaylistActivity {
-    - log: Logger
     - playlistDao: PlaylistDao
 
     + CreatePlaylistActivity(playlistDao: PlaylistDao)
@@ -23,7 +21,6 @@ class CreatePlaylistActivity {
 }
 
 class GetPlaylistActivity {
-    - log: Logger
     - playlistDao: PlaylistDao
 
     + GetPlaylistActivity(playlistDao: PlaylistDao)
@@ -32,7 +29,6 @@ class GetPlaylistActivity {
 }
 
 class GetPlaylistSongsActivity {
-    - log: Logger
     - playlistDao: PlaylistDao
 
     + GetPlaylistSongsActivity(playlistDao: PlaylistDao)
@@ -41,7 +37,6 @@ class GetPlaylistSongsActivity {
 }
 
 class UpdatePlaylistActivity {
-    - log: Logger
     - playlistDao: PlaylistDao
 
     + UpdatePlaylistActivity(playlistDao: PlaylistDao)
