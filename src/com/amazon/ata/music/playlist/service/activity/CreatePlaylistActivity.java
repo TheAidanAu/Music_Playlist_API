@@ -1,6 +1,7 @@
 package com.amazon.ata.music.playlist.service.activity;
 
 import com.amazon.ata.music.playlist.service.converters.ModelConverter;
+import com.amazon.ata.music.playlist.service.dynamodb.models.AlbumTrack;
 import com.amazon.ata.music.playlist.service.dynamodb.models.Playlist;
 import com.amazon.ata.music.playlist.service.exceptions.InvalidAttributeValueException;
 import com.amazon.ata.music.playlist.service.models.requests.CreatePlaylistRequest;
@@ -16,6 +17,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Implementation of the CreatePlaylistActivity for the MusicPlaylistService's CreatePlaylist API.
@@ -73,14 +76,28 @@ public class CreatePlaylistActivity implements RequestHandler<CreatePlaylistRequ
         newPlaylist.setName(requestedPlaylistName);
         newPlaylist.setCustomerId(requestedCustomerId);
         newPlaylist.setSongCount(0);
-        newPlaylist.setTags(new HashSet<>(createPlaylistRequest.getTags()));
         // Initialize an empty songList before storing it to DynamoDB
-        newPlaylist.setSongList(new ArrayList<>());
+        // Be careful you have to include the AlbumTrack type
+        newPlaylist.setSongList(new ArrayList<AlbumTrack>());
+        //TODO
+        // The Music Playlist Client will provide a non-empty list of tags
+        // or null IN THE REQUEST to indicate no tags were provided
+        // NO EMPTY LIST
+        List<String> requestedTags = createPlaylistRequest.getTags();
+        // Single point of setting the tags property, making it easier to understand the flow.
+        Set<String> playlistTags;
+        // Instead, the HashSet is instantiated separately based on the condition
+        // Checked if the requestedTags list is not only null but also not empty before creating the HashSet.
+        if (requestedTags != null && !requestedTags.isEmpty()) {
+            playlistTags = new HashSet<>(requestedTags);
+        } else {
+            playlistTags = null;
+        }
+
+        newPlaylist.setTags(playlistTags);
 
         playlistDao.savePlaylist(newPlaylist);
 
-        //FIXME potential fix
-        // previously, the argument in withPlaylist is new PlaylistModel()
         // The following lines are implemented because of the class diagrams and the GetPlaylistActivity class
         PlaylistModel newPlaylistModel = new ModelConverter().toPlaylistModel(newPlaylist);
 
