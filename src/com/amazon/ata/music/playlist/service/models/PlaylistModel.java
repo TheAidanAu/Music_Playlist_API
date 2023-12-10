@@ -9,6 +9,8 @@ public class PlaylistModel {
     private String customerId;
     private int songCount;
     private List<String> tags;
+    // the songList is not here because we don't want to expose
+    // our implementation of storing the song list within the playlist itself
 
     public PlaylistModel() {
 

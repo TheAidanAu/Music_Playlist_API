@@ -2,7 +2,6 @@ package com.amazon.ata.music.playlist.service.dynamodb.models;
 
 import com.amazon.ata.music.playlist.service.converters.AlbumTrackLinkedListConverter;
 
-import com.amazon.ata.music.playlist.service.exceptions.InvalidAttributeValueException;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
@@ -24,10 +23,10 @@ public class Playlist {
     private Integer songCount;
     // The music playlist client will provide a non-empty list of tags
     // or null in the request to indicate no tags were provided
-    private Set<String> tags = new HashSet<>();
+    private Set<String> tags;
     //FIXME The music playlist client will provide a non-empty list of tags
     // or null in the request to indicate no tags were provided.
-    private List<AlbumTrack> songList = new ArrayList<>();
+    private List<AlbumTrack> songList;
 
     @DynamoDBHashKey(attributeName = "id")
     public String getId() {
@@ -44,7 +43,6 @@ public class Playlist {
     }
 
     public void setName(String name) {
-        validateField("Playlist Name", name);
         this.name = name;
     }
 
@@ -54,7 +52,6 @@ public class Playlist {
     }
 
     public void setCustomerId(String customerId) {
-        validateField("Customer ID", customerId);
         this.customerId = customerId;
     }
 
@@ -85,18 +82,5 @@ public class Playlist {
 
     public void setSongList(List<AlbumTrack> songList) {
         this.songList = songList;
-    }
-
-    //Helper Methods
-    // This is to check the characters in the customer ID and the playlist name fields
-    public void validateField(String fieldName, String fieldValue) {
-        String invalidCharacters = "\"'\\";
-
-        if (fieldValue != null) {
-            // check if the field value contains any of the invalid characters
-            if (fieldValue.chars().anyMatch(c -> invalidCharacters.indexOf(c) >= 0) ) {
-                throw new InvalidAttributeValueException(fieldName + "has invalid characters");
-            }
-        }
     }
 }

@@ -1,14 +1,20 @@
 package com.amazon.ata.music.playlist.service.activity;
 
+import com.amazon.ata.music.playlist.service.dynamodb.models.Playlist;
+import com.amazon.ata.music.playlist.service.exceptions.InvalidAttributeValueException;
 import com.amazon.ata.music.playlist.service.models.requests.CreatePlaylistRequest;
 import com.amazon.ata.music.playlist.service.models.results.CreatePlaylistResult;
 import com.amazon.ata.music.playlist.service.models.PlaylistModel;
 import com.amazon.ata.music.playlist.service.dynamodb.PlaylistDao;
 
+import com.amazon.ata.music.playlist.service.util.MusicPlaylistServiceUtils;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Implementation of the CreatePlaylistActivity for the MusicPlaylistService's CreatePlaylist API.
@@ -44,6 +50,33 @@ public class CreatePlaylistActivity implements RequestHandler<CreatePlaylistRequ
     @Override
     public CreatePlaylistResult handleRequest(final CreatePlaylistRequest createPlaylistRequest, Context context) {
         log.info("Received CreatePlaylistRequest {}", createPlaylistRequest);
+
+        String requestedPlaylistName = createPlaylistRequest.getName();
+        if (!MusicPlaylistServiceUtils.isValidString(requestedPlaylistName)) {
+            throw new InvalidAttributeValueException(
+                    "This Playlist Name contains invalid characters"
+            );
+        }
+
+        String requestedCustomerId = createPlaylistRequest.getCustomerId();
+        if (!MusicPlaylistServiceUtils.isValidString(requestedCustomerId)) {
+            throw new InvalidAttributeValueException(
+                    "This Customer ID contains invalid characters"
+            );
+        }
+
+        //FIXME look at the guided projects for the CreateTopicMessageHandler class
+        // Create a Playlist object and save it
+        Playlist newPlaylist = new Playlist();
+        newPlaylist.setId(MusicPlaylistServiceUtils.generatePlaylistId());
+        newPlaylist.setName(requestedPlaylistName);
+        newPlaylist.setCustomerId(requestedCustomerId);
+        newPlaylist.setSongCount(0);
+        newPlaylist.setTags(new HashSet<>(createPlaylistRequest.getTags()));
+        // Initialize an empty songList before storing it to DynamoDB
+        newPlaylist.setSongList(new ArrayList<>());
+
+        playlistDao.savePlaylist(newPlaylist);
 
         return CreatePlaylistResult.builder()
                 .withPlaylist(new PlaylistModel())
