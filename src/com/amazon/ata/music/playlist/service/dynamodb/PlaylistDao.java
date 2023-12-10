@@ -36,7 +36,7 @@ public class PlaylistDao {
         return playlist;
     }
 
-    //FIXME new method to be implemented, look at the guided project
+    //doneFIXME new method to be implemented, look at the guided project
     public Playlist savePlaylist(Playlist playlist) {
         dynamoDbMapper.save(playlist);
         return playlist;

@@ -1,5 +1,6 @@
 package com.amazon.ata.music.playlist.service.activity;
 
+import com.amazon.ata.music.playlist.service.converters.ModelConverter;
 import com.amazon.ata.music.playlist.service.dynamodb.models.Playlist;
 import com.amazon.ata.music.playlist.service.exceptions.InvalidAttributeValueException;
 import com.amazon.ata.music.playlist.service.models.requests.CreatePlaylistRequest;
@@ -65,7 +66,7 @@ public class CreatePlaylistActivity implements RequestHandler<CreatePlaylistRequ
             );
         }
 
-        //FIXME look at the guided projects for the CreateTopicMessageHandler class
+        //DONEFIXME look at the guided projects for the CreateTopicMessageHandler class
         // Create a Playlist object and save it
         Playlist newPlaylist = new Playlist();
         newPlaylist.setId(MusicPlaylistServiceUtils.generatePlaylistId());
@@ -78,8 +79,13 @@ public class CreatePlaylistActivity implements RequestHandler<CreatePlaylistRequ
 
         playlistDao.savePlaylist(newPlaylist);
 
+        //FIXME potential fix
+        // previously, the argument in withPlaylist is new PlaylistModel()
+        // The following lines are implemented because of the class diagrams and the GetPlaylistActivity class
+        PlaylistModel newPlaylistModel = new ModelConverter().toPlaylistModel(newPlaylist);
+
         return CreatePlaylistResult.builder()
-                .withPlaylist(new PlaylistModel())
+                .withPlaylist(newPlaylistModel)
                 .build();
     }
 }
