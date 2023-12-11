@@ -21,8 +21,6 @@ public class Playlist {
     private String name;
     private String customerId;
     private Integer songCount;
-    // The music playlist client will provide a non-empty list of tags
-    // or null in the request to indicate no tags were provided
     private Set<String> tags;
     //FIXME The music playlist client will provide a non-empty list of tags
     // or null in the request to indicate no tags were provided.
