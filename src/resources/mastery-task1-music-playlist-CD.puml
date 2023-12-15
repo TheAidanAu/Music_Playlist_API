@@ -69,6 +69,15 @@ class AlbumTrackNotFoundException {
                                  cause: Throwable)
 }
 
+class PlaylistNotFoundException {
+
+    + PlaylistNotFoundException()
+    + PlaylistNotFoundException(message: String)
+    + PlaylistNotFoundException((cause: Throwable)
+    + PlaylistNotFoundException(message: String,
+                                cause: Throwable)
+}
+
 class InvalidAttributeValueException {
 
     + InvalidAttributeValueException()
@@ -78,14 +87,33 @@ class InvalidAttributeValueException {
                                     cause: Throwable)
 }
 
-class PlaylistNotFoundException {
+class InvalidAttributeChangeException {
 
-    + PlaylistNotFoundException()
-    + PlaylistNotFoundException(message: String)
-    + PlaylistNotFoundException((cause: Throwable)
-    + PlaylistNotFoundException(message: String,
-                                cause: Throwable)
+    + InvalidAttributeChangeException()
+    + InvalidAttributeChangeException(message: String)
+    + InvalidAttributeChangeException(cause: Throwable)
+    + InvalidAttributeChangeException(message: String,
+                                    cause: Throwable)
 }
+
+class InvalidAttributeException {
+
+    + InvalidAttributeException()
+    + InvalidAttributeException(message: String)
+    + InvalidAttributeException(cause: Throwable)
+    + InvalidAttributeException(message: String,
+                                    cause: Throwable)
+}
+
+InvalidAttributeException <|-- InvalidAttributeChangeException
+InvalidAttributeException <|-- InvalidAttributeValueException
+RuntimeException <|-- InvalidAttributeException
+
+/'
+<|-- represents the "is a" relationship or inheritance/generalization.
+The arrow points to the superclass or more general class,
+and the open angle bracket indicates the subclass or more specialized class.
+'/
 
 
 /'4. DynamoDB Model Classes'/
