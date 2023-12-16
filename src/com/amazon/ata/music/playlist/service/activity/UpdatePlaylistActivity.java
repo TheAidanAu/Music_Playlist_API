@@ -57,6 +57,7 @@ public class UpdatePlaylistActivity implements RequestHandler<UpdatePlaylistRequ
     public UpdatePlaylistResult handleRequest(final UpdatePlaylistRequest updatePlaylistRequest, Context context) {
         log.info("Received UpdatePlaylistRequest {}", updatePlaylistRequest);
 
+        // Validate the Playlist's name and Customer ID for security concerns
         String requestedPlaylistName = updatePlaylistRequest.getName();
         if (!MusicPlaylistServiceUtils.isValidString(requestedPlaylistName)) {
             throw new InvalidAttributeValueException(
@@ -71,17 +72,22 @@ public class UpdatePlaylistActivity implements RequestHandler<UpdatePlaylistRequ
             );
         }
 
-        //retrieving/loading the playlist,
+        // 2 steps: load and save
+        // Step 1: retrieving/loading the playlist,
         String requestedId = updatePlaylistRequest.getId();
+        // The getPlaylist method will throw a PlaylistNotFoundException if the Playlist does NOT exist
         Playlist playlistToUpdate = playlistDao.getPlaylist(requestedId);
 
+        // Check if the existing Playlist's Customer ID is the same as the Customer ID input by the user
         if (playlistToUpdate.getCustomerId().equals(requestedCustomerId)) {
+            // if both Customer IDs are the same, we can update/save the new Playlist Name
             playlistToUpdate.setName(requestedPlaylistName);
         } else {
+            // or we will throw an InvalidAttributeChangeException to make sure that the customer ID are the same
             throw new InvalidAttributeChangeException("You should provide the Customer Id that this playlist belongs to!");
         }
 
-        // load and save: saving/ updating the playlist,
+        // Step 2: Saving/Updating the playlist
         playlistDao.savePlaylist(playlistToUpdate);
 
         PlaylistModel playlistModelToUpdate = new ModelConverter().toPlaylistModel(playlistToUpdate);
