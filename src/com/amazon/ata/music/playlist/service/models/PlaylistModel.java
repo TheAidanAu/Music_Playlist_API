@@ -125,6 +125,7 @@ public class PlaylistModel {
 
         // BE careful of this trap
         // It's taking a Set<String> from the Playlist class and to covert it into a List<String>
+        // Initialize an ArrayList with the set of tags as a parameter to perform this conversion
         public Builder withTags(Set<String> tagsToUse) {
 
             if (tagsToUse == null) {

@@ -75,10 +75,10 @@ public class UpdatePlaylistActivity implements RequestHandler<UpdatePlaylistRequ
         String requestedId = updatePlaylistRequest.getId();
         Playlist playlistToUpdate = playlistDao.getPlaylist(requestedId);
 
-        if (requestedCustomerId.equals(playlistToUpdate.getCustomerId())) {
+        if (playlistToUpdate.getCustomerId().equals(requestedCustomerId)) {
             playlistToUpdate.setName(requestedPlaylistName);
         } else {
-            throw new InvalidAttributeChangeException();
+            throw new InvalidAttributeChangeException("You should provide the Customer Id that this playlist belongs to!");
         }
 
         // load and save: saving/ updating the playlist,
