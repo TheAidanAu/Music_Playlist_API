@@ -1,7 +1,9 @@
 package com.amazon.ata.music.playlist.service.models;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class PlaylistModel {
     private String id;
@@ -121,8 +123,16 @@ public class PlaylistModel {
             return this;
         }
 
-        public Builder withTags(List<String> tagsToUse) {
-            this.tags = tagsToUse;
+        // BE careful of this trap
+        // It's taking a Set<String> from the Playlist class and to covert it into a List<String>
+        public Builder withTags(Set<String> tagsToUse) {
+
+            if (tagsToUse == null) {
+                this.tags = null;
+            } else {
+                this.tags = new ArrayList<>(tagsToUse);
+            }
+
             return this;
         }
 
