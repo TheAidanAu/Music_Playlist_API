@@ -78,16 +78,17 @@ public class UpdatePlaylistActivity implements RequestHandler<UpdatePlaylistRequ
         // The getPlaylist method will throw a PlaylistNotFoundException if the Playlist does NOT exist
         Playlist playlistToUpdate = playlistDao.getPlaylist(requestedId);
 
-        // Check if the existing Playlist's Customer ID is the same as the Customer ID input by the user
+        // Step 2: Updating & Saving the playlist
+
+        // Check if the existing Playlist's Customer ID matches the Customer ID input by the user
         if (playlistToUpdate.getCustomerId().equals(requestedCustomerId)) {
             // if both Customer IDs are the same, we can update/save the new Playlist Name
             playlistToUpdate.setName(requestedPlaylistName);
         } else {
             // or we will throw an InvalidAttributeChangeException to make sure that the customer ID are the same
-            throw new InvalidAttributeChangeException("You should provide the Customer Id that this playlist belongs to!");
+            throw new InvalidAttributeChangeException("This playlist's customer ID is different from the customer ID you provided. Please correct");
         }
 
-        // Step 2: Saving/Updating the playlist
         playlistDao.savePlaylist(playlistToUpdate);
 
         PlaylistModel playlistModelToUpdate = new ModelConverter().toPlaylistModel(playlistToUpdate);
