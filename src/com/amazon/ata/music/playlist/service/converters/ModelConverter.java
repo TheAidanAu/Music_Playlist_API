@@ -18,6 +18,6 @@ public class ModelConverter {
                 .withName(playlist.getName())
                 .withCustomerId(playlist.getCustomerId())
                 .withSongCount(playlist.getSongCount())
-                .withTags(new ArrayList<>(playlist.getTags())).build();
+                .withTags((List<String>) playlist.getTags()).build();
     }
 }
