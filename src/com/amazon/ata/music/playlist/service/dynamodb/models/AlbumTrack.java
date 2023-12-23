@@ -10,10 +10,10 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
  */
 @DynamoDBTable(tableName = "album_tracks")
 public class AlbumTrack {
-    String asin;
-    Integer track_number;
-    String album_name;
-    String song_title;
+    private String asin;
+    private String album_name;
+    private Integer track_number;
+    private String song_title;
 
     @DynamoDBHashKey
     public String getAsin() {
@@ -38,9 +38,16 @@ public class AlbumTrack {
         return album_name;
     }
 
+    public void setAlbum_name(String album_name) {
+        this.album_name = album_name;
+    }
+
     @DynamoDBAttribute(attributeName = "song_title")
     public String getSong_title() {
         return song_title;
     }
 
+    public void setSong_title(String song_title) {
+        this.song_title = song_title;
+    }
 }
