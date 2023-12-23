@@ -46,6 +46,7 @@ public class AddSongToPlaylistActivity implements RequestHandler<AddSongToPlayli
      * to a playlist and persisting the updated playlist.
      * <p>
      * It then returns the updated song list of the playlist.
+     * Each song in the list is a converted Song Model
      * <p>
      * If the playlist does not exist, this should throw a PlaylistNotFoundException.
      * <p>
@@ -66,6 +67,8 @@ public class AddSongToPlaylistActivity implements RequestHandler<AddSongToPlayli
                 .getAlbumTrack(addSongToPlaylistRequest.getAsin(),
                         addSongToPlaylistRequest.getTrackNumber());
 
+        //TODO Boolean queueNext to be implemented in Sprint 15
+
         List<AlbumTrack> existingSongList = playlist.getSongList();
         existingSongList.add(SongToBeAdded);
 
@@ -75,6 +78,8 @@ public class AddSongToPlaylistActivity implements RequestHandler<AddSongToPlayli
 
         playlistDao.savePlaylist(playlist);
 
+        // We want to return the updated songList
+        // And we'd like to return a list of API-defined songs
         List<SongModel> songModelList = new ArrayList<>();
 
         for (AlbumTrack song: existingSongList) {
@@ -87,7 +92,7 @@ public class AddSongToPlaylistActivity implements RequestHandler<AddSongToPlayli
                 .withSongList(songModelList)
                 .build();
 
-        // old code
+        // old Placeholder code
 //        return AddSongToPlaylistResult.builder()
 //                .withSongList(Collections.singletonList(new SongModel()))
 //                .build();
