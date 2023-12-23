@@ -156,18 +156,5 @@ public class GetPlaylistSongsActivityTest {
         // WHEN + THEN
         assertThrows(PlaylistNotFoundException.class, () -> getPlaylistSongsActivity.handleRequest(request, null));
     }
-
-//    @Test
-//    public void handleRequest_withInvalidSongOrder_throwsException() {
-//        // GIVEN
-//        Playlist playlist = PlaylistTestHelper.generatePlaylist();
-//        String id = playlist.getId();
-//        GetPlaylistSongsRequest request = GetPlaylistSongsRequest.builder()
-//            .withId(id)
-//            .withOrder("NOT A VALID ORDER")
-//            .build();
-//
-//        // WHEN + THEN
-//        assertThrows(IllegalArgumentException.class, () -> getPlaylistSongsActivity.handleRequest(request));
-//    }
+    
 }
