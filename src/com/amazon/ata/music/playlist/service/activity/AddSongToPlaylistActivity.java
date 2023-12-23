@@ -80,13 +80,13 @@ public class AddSongToPlaylistActivity implements RequestHandler<AddSongToPlayli
 
         // We want to return the updated songList
         // And we'd like to return a list of API-defined songs
-        List<SongModel> songModelList = new ArrayList<>();
+        List<SongModel> songModelList = new ModelConverter().toSongModelList(existingSongList);
 
-        for (AlbumTrack song: existingSongList) {
-            songModelList.add(new ModelConverter().toSongModel(song));
-        }
-
-        // SongModel newSongModel = new ModelConverter().toSongModel(SongToBeAdded);
+//        old code put as a helper method in the ModelConverter class
+//        List<SongModel> songModelList = new ArrayList<>();
+//        for (AlbumTrack song: existingSongList) {
+//            songModelList.add(new ModelConverter().toSongModel(song));
+//        }
 
         return AddSongToPlaylistResult.builder()
                 .withSongList(songModelList)

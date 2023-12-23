@@ -54,11 +54,14 @@ public class GetPlaylistSongsActivity implements RequestHandler<GetPlaylistSongs
         Playlist playlist = playlistDao.getPlaylist(getPlaylistSongsRequest.getId());
 
         List<AlbumTrack> existingSongList = playlist.getSongList();
-        List<SongModel> songModelList = new ArrayList<>();
 
-        for (AlbumTrack song: existingSongList) {
-            songModelList.add(new ModelConverter().toSongModel(song));
-        }
+        // And we'd like to return a list of API-defined songs
+        List<SongModel> songModelList = new ModelConverter().toSongModelList(existingSongList);
+//        old code put as a helper method in the ModelConverter class
+//        List<SongModel> songModelList = new ArrayList<>();
+//        for (AlbumTrack song: existingSongList) {
+//            songModelList.add(new ModelConverter().toSongModel(song));
+//        }
 
         return GetPlaylistSongsResult.builder()
                 .withSongList(songModelList)

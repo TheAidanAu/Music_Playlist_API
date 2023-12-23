@@ -36,4 +36,13 @@ public class ModelConverter {
                 .withTitle(albumTrack.getSong_title())
                 .build();
     }
+
+    public List<SongModel> toSongModelList(List<AlbumTrack> albumTrackList) {
+        List<SongModel> songModelList = new ArrayList<>();
+
+        for (AlbumTrack song: albumTrackList) {
+            songModelList.add(toSongModel(song));
+        }
+        return songModelList;
+    }
 }
