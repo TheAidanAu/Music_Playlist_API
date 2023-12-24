@@ -119,7 +119,7 @@ public class GetPlaylistSongsActivityTest {
 
         GetPlaylistSongsRequest request = GetPlaylistSongsRequest.builder()
                                               .withId(playlistId)
-                                              .withOrder(SongOrder.REVERSED)
+                                              .withOrder(SongOrder.SHUFFLED)
                                               .build();
         when(playlistDao.getPlaylist(playlistId)).thenReturn(playlist);
 
@@ -156,5 +156,5 @@ public class GetPlaylistSongsActivityTest {
         // WHEN + THEN
         assertThrows(PlaylistNotFoundException.class, () -> getPlaylistSongsActivity.handleRequest(request, null));
     }
-    
+
 }

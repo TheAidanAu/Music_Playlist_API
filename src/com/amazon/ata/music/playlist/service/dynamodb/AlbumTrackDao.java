@@ -33,7 +33,7 @@ public class AlbumTrackDao {
      * @return the stored AlbumKTrack, or null if none was found.
      */
     public AlbumTrack getAlbumTrack(String asin, Integer track_number) {
-        AlbumTrack albumTrack = dynamoDbMapper.load(AlbumTrack.class, asin, track_number);
+        AlbumTrack albumTrack = this.dynamoDbMapper.load(AlbumTrack.class, asin, track_number);
 
         if (albumTrack == null) {
             throw new AlbumTrackNotFoundException("Could not find an album track with the ASIN "

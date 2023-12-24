@@ -46,7 +46,7 @@ public class AddSongToPlaylistActivity implements RequestHandler<AddSongToPlayli
      * to a playlist and persisting the updated playlist.
      * <p>
      * It then returns the updated song list of the playlist.
-     * Each song in the list is a converted Song Model
+     * Each song in the list is a converted SongModel
      * <p>
      * If the playlist does not exist, this should throw a PlaylistNotFoundException.
      * <p>
