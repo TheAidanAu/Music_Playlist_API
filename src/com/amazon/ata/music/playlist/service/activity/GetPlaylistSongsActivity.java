@@ -3,6 +3,7 @@ package com.amazon.ata.music.playlist.service.activity;
 import com.amazon.ata.music.playlist.service.converters.ModelConverter;
 import com.amazon.ata.music.playlist.service.dynamodb.models.AlbumTrack;
 import com.amazon.ata.music.playlist.service.dynamodb.models.Playlist;
+import com.amazon.ata.music.playlist.service.models.SongOrder;
 import com.amazon.ata.music.playlist.service.models.requests.GetPlaylistSongsRequest;
 import com.amazon.ata.music.playlist.service.models.results.GetPlaylistSongsResult;
 import com.amazon.ata.music.playlist.service.models.SongModel;
@@ -15,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -54,6 +56,10 @@ public class GetPlaylistSongsActivity implements RequestHandler<GetPlaylistSongs
         Playlist playlist = playlistDao.getPlaylist(getPlaylistSongsRequest.getId());
 
         List<AlbumTrack> existingSongList = playlist.getSongList();
+
+        if (getPlaylistSongsRequest.getOrder() == SongOrder.REVERSED) {
+            Collections.reverse(existingSongList);
+        }
 
         // And we'd like to return a list of API-defined songs
         List<SongModel> songModelList = new ModelConverter().toSongModelList(existingSongList);
