@@ -69,7 +69,6 @@ public class AddSongToPlaylistActivity implements RequestHandler<AddSongToPlayli
 
         List<AlbumTrack> existingSongList = playlist.getSongList();
 
-        //TODO Boolean queueNext to be implemented in Sprint 15
         if (addSongToPlaylistRequest.isQueueNext()) {
             existingSongList.add(0, SongToBeAdded);
         } else {

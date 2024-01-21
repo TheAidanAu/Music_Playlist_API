@@ -11,9 +11,9 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 @DynamoDBTable(tableName = "album_tracks")
 public class AlbumTrack {
     private String asin;
-    private String album_name;
-    private Integer track_number;
-    private String song_title;
+    private String albumName;
+    private Integer trackNumber;
+    private String songTitle;
 
     @DynamoDBHashKey
     public String getAsin() {
@@ -26,28 +26,28 @@ public class AlbumTrack {
 
     @DynamoDBRangeKey
     public Integer getTrack_number() {
-        return track_number;
+        return trackNumber;
     }
 
-    public void setTrack_number(Integer track_number) {
-        this.track_number = track_number;
+    public void setTrack_number(Integer trackNumber) {
+        this.trackNumber = trackNumber;
     }
 
     @DynamoDBAttribute(attributeName = "album_name")
     public String getAlbum_name() {
-        return album_name;
+        return albumName;
     }
 
-    public void setAlbum_name(String album_name) {
-        this.album_name = album_name;
+    public void setAlbum_name(String albumName) {
+        this.albumName = albumName;
     }
 
     @DynamoDBAttribute(attributeName = "song_title")
     public String getSong_title() {
-        return song_title;
+        return songTitle;
     }
 
-    public void setSong_title(String song_title) {
-        this.song_title = song_title;
+    public void setSong_title(String songTitle) {
+        this.songTitle = songTitle;
     }
 }
