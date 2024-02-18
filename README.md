@@ -129,11 +129,33 @@ Below are the endpoints required to provide the MLP business requirements
 
 #### Add Song To Playlist Endpoint
 
-usic
+* Accepts `POST` requests to `/playlists/:id/songs`
+* Accepts a playlist ID and a song to be added. The song is specified by the
+  album’s ASIN and song track number
+    * By default, will insert the new song to the end of the playlist
+    * If the optional `queueNext` parameter is provided and is `true`, this
+      API will insert the new song to the front of the playlist so that it
+      will be the next song played
+* If the playlist is not found, will throw a `PlaylistNotFoundException`
+* If the given album ASIN doesn’t exist, or if the given track number does
+  not exist for the album ASIN, will throw an `AlbumTrackNotFoundException`
 
 #### Get Playlist Songs Endpoint
 
-usi#### Data
+* Accepts `GET` requests to `/playlists/:id/songs`
+* Retrieves all songs of a playlist with the given playlist ID
+    * Returns the song list in default playlist order
+    * If the optional `order` parameter is provided, this API will return the
+      song list in order, reverse order, or shuffled order, based on the value
+      of `order`
+        * DEFAULT - same as default behavior, returns songs in playlist order
+        * REVERSED - returns playlist songs in reversed order
+        * SHUFFLED - returns playlist songs in a randomized order
+* If the playlist ID is found, but contains no songs, the songs list will be
+  empty
+* If the playlist ID is not found, will throw a `PlaylistNotFoundException`
+
+#### Data
 
 * We have worked with our sister team to import a number of albums into a local
   table called `album_tracks` in order to start development.
